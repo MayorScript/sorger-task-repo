@@ -7,6 +7,7 @@ import * as React from "react";
 import useColorScheme from "../../hooks/useColorScheme";
 import {useNavigation} from "@react-navigation/native";
 import Toast from 'react-native-root-toast';
+import {closeTask} from "../../services/taskService";
 
 const LeftSwipeActions = (colorScheme, item) => {
     return (
@@ -79,8 +80,18 @@ const rightSwipeActions = (colorScheme, item) => {
         </Pressable>
     );
 };
-const swipeFromLeftOpen = () => {
-    alert('Swipe from left');
+const swipeFromLeftOpen = async (item) => {
+        try{
+            console.log("item test", item)
+            await closeTask(item.id);
+            Toast.show(`Task marked as completed !`, {
+                duration: Toast.durations.LONG,
+            });
+        }catch(err: any){
+            Toast.show(`Unable to mark as completed !`, {
+                duration: Toast.durations.LONG,
+            });
+        }
 };
 const swipeFromRightOpen = () => {
     alert('Swipe from right');
@@ -93,7 +104,7 @@ export const TaskCard = ({item}) => {
             renderLeftActions={() => LeftSwipeActions(colorScheme, item)}
             renderRightActions={() => rightSwipeActions(colorScheme, item)}
             // onSwipeableRightOpen={swipeFromRightOpen}
-            // onSwipeableLeftOpen={swipeFromLeftOpen}
+             onSwipeableLeftOpen={() => swipeFromLeftOpen(item)}
         >
             <Pressable onPress={() => navigation.navigate("Task", item)}>
                 <View style={styles.container} lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
@@ -114,7 +125,7 @@ export const TaskCard = ({item}) => {
 const styles = StyleSheet.create({
     container: {
         padding: 12,
-        width: '100%',
+        width: 370,
         height: 60,
         borderRadius: 15,
         justifyContent: 'center',

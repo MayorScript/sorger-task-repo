@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/Theme/EditScreenInfo';
 import { Text, View } from '../components/Theme/Themed';
 import { RootTabScreenProps } from '../types';
-import {TaskCard} from "../components/TaskCard";
 import AllTasks from "../components/templates/AllTasks";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'HomeScreen'>) {
@@ -19,6 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        width: '100%',
     },
     title: {
         fontSize: 20,
