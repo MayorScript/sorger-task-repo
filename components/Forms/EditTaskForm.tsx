@@ -1,8 +1,8 @@
+import {useState} from 'react';
 import {Text, View, StyleSheet, Pressable, Button, TextInput} from 'react-native';
+import {Picker} from '@react-native-picker/picker'
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {createTask} from "../../services/taskService";
-import Toast from "react-native-root-toast";
 
 const initialStateValues = {
     content: "",
@@ -21,29 +21,13 @@ const taskValidationSchema = yup.object().shape({
     priority: yup
         .number()
 })
-const AddTaskForm = ({navigation}) => {
-    const onTaskSubmit = async (values:any) => {
-        try{
-            console.log('value',values);
-            const res = await createTask(values);
-            if(res){
-                Toast.show(`Task added successfully`, {
-                    duration: Toast.durations.LONG,
-                });
-                navigation.navigate("HomeScreen");
-            }
-        }catch(err: any){
-            Toast.show(`Oops! Task could not be added`, {
-                duration: Toast.durations.LONG,
-            });
-        }
-    }
+const EditTaskForm = ({onFormSubmit, taskDetail}) => {
     return (
         <View style={styles.root}>
             <Formik
                 validationSchema={taskValidationSchema}
                 initialValues={initialStateValues}
-                onSubmit={values => onTaskSubmit(values)}
+                onSubmit={onFormSubmit}
             >
                 {({
                       handleChange,
@@ -62,6 +46,7 @@ const AddTaskForm = ({navigation}) => {
                                 placeholder="Content"
                                 onChangeText={handleChange("content")}
                                 value={values.content}
+                                defaultValue={taskDetail.content}
                                 onBlur={handleBlur("content")}
                             />
                             {errors.content && (
@@ -73,6 +58,7 @@ const AddTaskForm = ({navigation}) => {
                                 placeholder="Description"
                                 onChangeText={handleChange("description")}
                                 value={values.description}
+                                defaultValue={taskDetail.description}
                                 onBlur={handleBlur("description")}
                             />
                             {errors.description && (
@@ -96,6 +82,7 @@ const AddTaskForm = ({navigation}) => {
                                 placeholder="Priority"
                                 onChangeText={handleChange("priority")}
                                 value={values.priority}
+                                defaultValue={taskDetail.priority}
                                 onBlur={handleBlur("priority")}
                             />
                             {errors.priority && (
@@ -152,4 +139,4 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     }
 })
-export default AddTaskForm;
+export default EditTaskForm;

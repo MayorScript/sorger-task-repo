@@ -1,10 +1,9 @@
 import {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/Theme/EditScreenInfo';
 import { Text, View } from '../components/Theme/Themed';
 import {getActiveTask} from "../services/taskService";
+import EditTaskForm from "../components/Forms/EditTaskForm";
 
 interface TaskDetail{
     content: string,
@@ -20,11 +19,21 @@ export default function TaskScreen({route}) {
     const fetchTaskDetail = async () => {
         const res = await getActiveTask(item.id);
         setTaskDetail(res.data);
-        //console.log('test data', res.data);
+        console.log('test data', res.data);
     }
     useEffect(()=> {
         fetchTaskDetail();
-    },[])
+    },[]);
+
+    const onTaskSubmit = async ({values}:any) => {
+        console.log('value',values);
+        const res = await createTask(values);
+        setTaskDetail((taskDetail: any) => [
+            ...taskDetail,
+            res.data
+        ])
+        //navigation.navigate("HomeScreen")
+    }
     const setPriority = ({taskDetail}) => {
         console.log("p",taskDetail.priority)
         switch(taskDetail.priority) {
@@ -50,9 +59,8 @@ export default function TaskScreen({route}) {
             <Text >Task Content: {taskDetail.content}</Text>
             <Text>Task Priority: {({taskDetail}) => setPriority(taskDetail)}</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            {/*<EditScreenInfo path="/screens/ModalScreen.tsx" />*/}
-            <Text >Edit Form</Text>
-
+            <Text >Edit Task</Text>
+            <EditTaskForm onFormSubmit={onTaskSubmit} taskDetail={taskDetail} />
             {/* Use a light status bar on iOS to account for the black space above the modal */}
             <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
         </View>

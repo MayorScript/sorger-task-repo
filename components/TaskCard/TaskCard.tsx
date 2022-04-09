@@ -8,22 +8,14 @@ import useColorScheme from "../../hooks/useColorScheme";
 import {useNavigation} from "@react-navigation/native";
 import Toast from 'react-native-root-toast';
 
-const LeftSwipeActions = () => {
+const LeftSwipeActions = (colorScheme, item) => {
     return (
-        <View
-            style={{ flex: 1, backgroundColor: '#ccffbd', justifyContent: 'center' }}
-        >
-            <Text
-                style={{
-                    color: '#40394a',
-                    paddingHorizontal: 10,
-                    fontWeight: '600',
-                    paddingVertical: 20,
-                }}
-            >
-                Bookmark
-            </Text>
-        </View>
+        <Pressable>
+            <View style={styles.container} lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
+                <Text numberOfLines={1}>{item.content}</Text>
+                <Text>Status: <Text style={{color: 'green'}}>Completed</Text></Text>
+            </View>
+        </Pressable>
     );
 };
 const rightSwipeActions = (colorScheme, item) => {
@@ -98,7 +90,7 @@ export const TaskCard = ({item}) => {
     const navigation = useNavigation();
     return (
         <Swipeable
-            renderLeftActions={LeftSwipeActions}
+            renderLeftActions={() => LeftSwipeActions(colorScheme, item)}
             renderRightActions={() => rightSwipeActions(colorScheme, item)}
             // onSwipeableRightOpen={swipeFromRightOpen}
             // onSwipeableLeftOpen={swipeFromLeftOpen}
@@ -106,6 +98,14 @@ export const TaskCard = ({item}) => {
             <Pressable onPress={() => navigation.navigate("Task", item)}>
                 <View style={styles.container} lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
                     <Text numberOfLines={1}>{item.content}</Text>
+                    {item.completed ? (
+                            <Text style={styles.status}>Status: <Text style={{color: 'green'}}>Completed</Text></Text>
+                    )
+                        : (
+                            <Text style={styles.status}>Status: <Text style={{ color: 'red'}}>Not Completed</Text></Text>
+                        )
+                    }
+
                 </View>
             </Pressable>
         </Swipeable>
@@ -113,11 +113,14 @@ export const TaskCard = ({item}) => {
 }
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        padding: 12,
         width: '100%',
         height: 60,
         borderRadius: 15,
         justifyContent: 'center',
         marginVertical: 10
+    },
+    status: {
+        marginTop: 10
     }
 });

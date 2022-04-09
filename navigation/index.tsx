@@ -56,7 +56,10 @@ function BottomTabNavigator() {
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'HomeScreen'>) => ({
           title: 'Tasks',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+            tabBarLabelStyle:{
+                color: Colors[colorScheme].text
+            },
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={Colors[colorScheme].text} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('AddTask')}
@@ -78,7 +81,10 @@ function BottomTabNavigator() {
         component={InfoScreen}
         options={{
           title: 'Info',
-          tabBarIcon: ({ color }) => <TabBarIcon name="info-circle" color={color} />,
+            tabBarLabelStyle:{
+              color: Colors[colorScheme].text
+            },
+          tabBarIcon: ({ color }) => <TabBarIcon name="info-circle" color={Colors[colorScheme].text} />,
         }}
       />
     </BottomTab.Navigator>
