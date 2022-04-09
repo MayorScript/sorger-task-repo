@@ -3,13 +3,16 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/Theme/EditScreenInfo';
 import { Text, View } from '../components/Theme/Themed';
 import { RootTabScreenProps } from '../types';
+import {TaskCard} from "../components/TaskCard";
+import AllTasks from "../components/templates/AllTasks";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'HomeScreen'>) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>All Tasks</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+            {/*<EditScreenInfo path="/screens/TabOneScreen.tsx" />*/}
+            <AllTasks />
         </View>
     );
 }
