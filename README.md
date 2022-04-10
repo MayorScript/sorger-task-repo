@@ -3,8 +3,8 @@
 ## Project Setup
 ** Install dependencies **
 `yarn or npm install`
-** Run app in dev environment **
-`yarn or npm run dev`
+** Start development server **
+`yarn or npm start`
 
 ### Application Test - Jest
 > Unit test are written for every component (Snapshots, Functions & State Testing)
