@@ -1,10 +1,11 @@
 workflows:
-  scripts:
-    - name: Install dependencies
-      script: yarn install
+  sorger-workflow:
+    scripts:
+      - name: Install dependencies
+        script: yarn install
 
-    - name: Tests
-      script: yarn test
+      - name: Tests
+        script: yarn test
 
-    - name: Build Android app
-      script: expo build:android
+      - name: Build Android app
+        script: expo build:android
