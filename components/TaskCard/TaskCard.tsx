@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
 import {StyleSheet, Pressable, Alert} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, View } from '../Theme/Themed';
 import Colors from "../../constants/Colors";
@@ -101,6 +102,7 @@ export const TaskCard = ({item}) => {
     const colorScheme = useColorScheme();
     const navigation = useNavigation();
     return (
+        <GestureHandlerRootView>
         <Swipeable
             renderLeftActions={() => LeftSwipeActions(colorScheme, item)}
             renderRightActions={() => rightSwipeActions(colorScheme, item)}
@@ -120,6 +122,7 @@ export const TaskCard = ({item}) => {
                 </View>
             </Pressable>
         </Swipeable>
+        </GestureHandlerRootView>
     )
 }
 const styles = StyleSheet.create({

@@ -4,23 +4,32 @@ import {Picker} from '@react-native-picker/picker'
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
-const initialStateValues = {
-    content: "",
-    description: "",
-    dueString: "",
-    priority: ""
-}
+
 const taskValidationSchema = yup.object().shape({
     content: yup
-        .string(),
+        .string()
+        .nullable()
+        .notRequired(),
     description: yup
-        .string(),
-    dueString: yup
-        .string(),
+        .string()
+        .nullable()
+        .notRequired(),
+    due_string: yup
+        .string()
+        .nullable()
+        .notRequired(),
     priority: yup
         .number()
+        .nullable()
+        .notRequired()
 })
-const EditTaskForm = ({onFormSubmit}) => {
+const EditTaskForm = ({onFormSubmit, item}) => {
+    const initialStateValues = {
+        content: item.content ?? "",
+        description: item.description ?? "",
+        due_string: item.due?.string ?? "",
+        priority: item.priority ?? ""
+    }
     return (
         <View style={styles.root}>
             <Formik
@@ -63,15 +72,15 @@ const EditTaskForm = ({onFormSubmit}) => {
                             )}
                             <TextInput
                                 style={styles.input}
-                                name="dueString"
+                                name="due_string"
                                 placeholder="Due Date"
-                                onChangeText={handleChange("dueString")}
-                                value={values.dueString}
+                                onChangeText={handleChange("due_string")}
+                                value={values.due_string}
 
-                                onBlur={handleBlur("dueString")}
+                                onBlur={handleBlur("due_string")}
                             />
-                            {errors.dueString && (
-                                <Text style={styles.validationErrors}>{errors.dueString}</Text>
+                            {errors.due_string && (
+                                <Text style={styles.validationErrors}>{errors.due_string}</Text>
                             )}
                             <TextInput
                                 style={styles.input}

@@ -15,15 +15,19 @@ const taskValidationSchema = yup.object().shape({
         .string()
         .required('Content is required'),
     description: yup
-        .string(),
+        .string()
+        .required('Description is required'),
     due_string: yup
-        .string(),
+        .string()
+        .required('Due Date is required'),
     priority: yup
         .number()
+        .required('Priority is required')
 })
 const AddTaskForm = ({navigation}) => {
     const onTaskSubmit = async (values:any) => {
         try{
+            console.log("val", values)
             const res = await createTask(values);
             if(res){
                 Toast.show(`Task added successfully`, {

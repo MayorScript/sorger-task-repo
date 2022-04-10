@@ -7,25 +7,9 @@ import EditTaskForm from "../components/Forms/EditTaskForm";
 import Toast from "react-native-root-toast";
 import {useNavigation} from "@react-navigation/native";
 
-interface TaskDetail{
-    content: string,
-    priority: string,
-    due: {
-        date: string
-    }
-}
 export default function TaskScreen({route}) {
-    const [taskDetail, setTaskDetail] = useState({});
     const item = route.params;
     const navigation = useNavigation();
-
-    const fetchTaskDetail = async () => {
-        const res = await getActiveTask(item.id);
-        setTaskDetail(res.data);
-    }
-    useEffect(()=> {
-        fetchTaskDetail();
-    },[]);
 
     const onTaskSubmit = async (values:any) => {
         try{
@@ -45,12 +29,12 @@ export default function TaskScreen({route}) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Task Details</Text>
-            <Text style={styles.content}>Task Content: {taskDetail.content}</Text>
-            <Text style={styles.content}>Task Priority: {taskDetail.priority}</Text>
-            <Text style={styles.content}>Due Date: {taskDetail.due?.string || "No due date"}</Text>
+            <Text style={styles.content}>Task Content: {item.content}</Text>
+            <Text style={styles.content}>Task Priority: {item.priority}</Text>
+            <Text style={styles.content}>Due Date: {item.due?.string || "No due date"}</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <Text >Edit Task</Text>
-            <EditTaskForm onFormSubmit={onTaskSubmit} taskDetail={taskDetail} />
+            <EditTaskForm onFormSubmit={onTaskSubmit} item={item} />
             {/* Use a light status bar on iOS to account for the black space above the modal */}
             <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
         </View>
