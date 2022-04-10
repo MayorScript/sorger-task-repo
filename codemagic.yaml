@@ -1,0 +1,10 @@
+workflows:
+  scripts:
+    - name: Install dependencies
+      script: yarn install
+
+    - name: Tests
+      script: yarn test
+
+    - name: Build Android app
+      script: expo build:android
