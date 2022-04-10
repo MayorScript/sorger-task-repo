@@ -2,8 +2,10 @@ import {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Theme/Themed';
-import {getActiveTask} from "../services/taskService";
+import {getActiveTask, updateTask} from "../services/taskService";
 import EditTaskForm from "../components/Forms/EditTaskForm";
+import Toast from "react-native-root-toast";
+import {useNavigation} from "@react-navigation/native";
 
 interface TaskDetail{
     content: string,
@@ -15,49 +17,37 @@ interface TaskDetail{
 export default function TaskScreen({route}) {
     const [taskDetail, setTaskDetail] = useState({});
     const item = route.params;
+    const navigation = useNavigation();
 
     const fetchTaskDetail = async () => {
         const res = await getActiveTask(item.id);
         setTaskDetail(res.data);
-        console.log('test data', res.data);
     }
     useEffect(()=> {
         fetchTaskDetail();
     },[]);
 
-    const onTaskSubmit = async ({values}:any) => {
-        console.log('value',values);
-        const res = await createTask(values);
-        setTaskDetail((taskDetail: any) => [
-            ...taskDetail,
-            res.data
-        ])
-        //navigation.navigate("HomeScreen")
-    }
-    const setPriority = ({taskDetail}) => {
-        console.log("p",taskDetail.priority)
-        switch(taskDetail.priority) {
-            case 1:
-                return <Text>Normal</Text>
-                break;
-            case 2:
-                return <Text>High</Text>
-                break;
-            case 3:
-                return <Text>Low</Text>
-                break;
-            case 4:
-                return <Text>Urgent</Text>
-                break;
-            default:
-            return;
+    const onTaskSubmit = async (values:any) => {
+        try{
+            const res = await updateTask(values,item.id);
+            if(res){
+                Toast.show(`Task updated successfully`, {
+                    duration: Toast.durations.LONG,
+                });
+                navigation.navigate("HomeScreen");
+            }
+        }catch(err: any){
+            Toast.show(`Oops! Task could not be updated`, {
+                duration: Toast.durations.LONG,
+            });
         }
     }
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Task Details</Text>
-            <Text >Task Content: {taskDetail.content}</Text>
-            <Text>Task Priority: {({taskDetail}) => setPriority(taskDetail)}</Text>
+            <Text style={styles.content}>Task Content: {taskDetail.content}</Text>
+            <Text style={styles.content}>Task Priority: {taskDetail.priority}</Text>
+            <Text style={styles.content}>Due Date: {taskDetail.due?.string || "No due date"}</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <Text >Edit Task</Text>
             <EditTaskForm onFormSubmit={onTaskSubmit} taskDetail={taskDetail} />
@@ -76,6 +66,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
+        textAlign: 'right'
+    },
+    content: {
+        fontSize: 17,
+        lineHeight: 24,
+        textAlign: 'right',
     },
     separator: {
         marginVertical: 30,

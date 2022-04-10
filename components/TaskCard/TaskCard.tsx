@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import {StyleSheet, Pressable, Alert} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,7 +8,7 @@ import * as React from "react";
 import useColorScheme from "../../hooks/useColorScheme";
 import {useNavigation} from "@react-navigation/native";
 import Toast from 'react-native-root-toast';
-import {closeTask} from "../../services/taskService";
+import {closeTask, deleteTask} from "../../services/taskService";
 
 const LeftSwipeActions = (colorScheme, item) => {
     return (
@@ -20,8 +21,8 @@ const LeftSwipeActions = (colorScheme, item) => {
     );
 };
 const rightSwipeActions = (colorScheme, item) => {
-    const deleteTask = (item) => {
-            Alert.alert(
+    const deleteTaskConfirm = () => {
+             Alert.alert(
                 "Delete Task",
                 `Are you sure you want to delete this task ${item.id}?`,
                 [
@@ -40,12 +41,15 @@ const rightSwipeActions = (colorScheme, item) => {
                 }
             );
     }
-    const confirmDelete = async (item) => {
+    const confirmDelete = async (item, navigation) => {
+        const nav: any = {navigation};
         try{
-            await deleteTask(item.id);
-            Toast.show(`Task deleted successfully`, {
-                duration: Toast.durations.LONG,
-            });
+            //console.log(item);
+            //await deleteTask(item.id);
+            // Toast.show(`Task deleted successfully`, {
+            //     duration: Toast.durations.LONG,
+            // });
+
         }catch(err: any){
             Toast.show('Request failed to send.', {
                 duration: Toast.durations.LONG,
@@ -54,7 +58,7 @@ const rightSwipeActions = (colorScheme, item) => {
 
     }
     return (
-        <Pressable onPress={() => deleteTask(item)}>
+        <Pressable onPress={() => deleteTaskConfirm()}>
         <View
             style={{
                 justifyContent: 'center',
@@ -93,9 +97,6 @@ const swipeFromLeftOpen = async (item) => {
             });
         }
 };
-const swipeFromRightOpen = () => {
-    alert('Swipe from right');
-};
 export const TaskCard = ({item}) => {
     const colorScheme = useColorScheme();
     const navigation = useNavigation();
@@ -103,7 +104,6 @@ export const TaskCard = ({item}) => {
         <Swipeable
             renderLeftActions={() => LeftSwipeActions(colorScheme, item)}
             renderRightActions={() => rightSwipeActions(colorScheme, item)}
-            // onSwipeableRightOpen={swipeFromRightOpen}
              onSwipeableLeftOpen={() => swipeFromLeftOpen(item)}
         >
             <Pressable onPress={() => navigation.navigate("Task", item)}>

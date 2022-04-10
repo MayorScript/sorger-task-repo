@@ -7,7 +7,7 @@ import Toast from "react-native-root-toast";
 const initialStateValues = {
     content: "",
     description: "",
-    dueString: "",
+    due_string: "",
     priority: ""
 }
 const taskValidationSchema = yup.object().shape({
@@ -16,7 +16,7 @@ const taskValidationSchema = yup.object().shape({
         .required('Content is required'),
     description: yup
         .string(),
-    dueString: yup
+    due_string: yup
         .string(),
     priority: yup
         .number()
@@ -24,7 +24,6 @@ const taskValidationSchema = yup.object().shape({
 const AddTaskForm = ({navigation}) => {
     const onTaskSubmit = async (values:any) => {
         try{
-            console.log('value',values);
             const res = await createTask(values);
             if(res){
                 Toast.show(`Task added successfully`, {
@@ -80,15 +79,15 @@ const AddTaskForm = ({navigation}) => {
                             )}
                             <TextInput
                                 style={styles.input}
-                                name="dueString"
-                                placeholder="Due Date"
-                                onChangeText={handleChange("dueString")}
-                                value={values.dueString}
+                                name="due_string"
+                                placeholder="Due Date. Example - tomorrow at 12:00"
+                                onChangeText={handleChange("due_string")}
+                                value={values.due_string}
 
-                                onBlur={handleBlur("dueString")}
+                                onBlur={handleBlur("due_string")}
                             />
-                            {errors.dueString && (
-                                <Text style={styles.validationErrors}>{errors.dueString}</Text>
+                            {errors.due_string && (
+                                <Text style={styles.validationErrors}>{errors.due_string}</Text>
                             )}
                             <TextInput
                                 style={styles.input}

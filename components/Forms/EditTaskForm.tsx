@@ -12,8 +12,7 @@ const initialStateValues = {
 }
 const taskValidationSchema = yup.object().shape({
     content: yup
-        .string()
-        .required('Content is required'),
+        .string(),
     description: yup
         .string(),
     dueString: yup
@@ -21,7 +20,7 @@ const taskValidationSchema = yup.object().shape({
     priority: yup
         .number()
 })
-const EditTaskForm = ({onFormSubmit, taskDetail}) => {
+const EditTaskForm = ({onFormSubmit}) => {
     return (
         <View style={styles.root}>
             <Formik
@@ -46,7 +45,6 @@ const EditTaskForm = ({onFormSubmit, taskDetail}) => {
                                 placeholder="Content"
                                 onChangeText={handleChange("content")}
                                 value={values.content}
-                                defaultValue={taskDetail.content}
                                 onBlur={handleBlur("content")}
                             />
                             {errors.content && (
@@ -58,7 +56,6 @@ const EditTaskForm = ({onFormSubmit, taskDetail}) => {
                                 placeholder="Description"
                                 onChangeText={handleChange("description")}
                                 value={values.description}
-                                defaultValue={taskDetail.description}
                                 onBlur={handleBlur("description")}
                             />
                             {errors.description && (
@@ -82,7 +79,6 @@ const EditTaskForm = ({onFormSubmit, taskDetail}) => {
                                 placeholder="Priority"
                                 onChangeText={handleChange("priority")}
                                 value={values.priority}
-                                defaultValue={taskDetail.priority}
                                 onBlur={handleBlur("priority")}
                             />
                             {errors.priority && (

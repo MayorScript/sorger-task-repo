@@ -12,7 +12,7 @@ export const createTask = asyncHandler(
   async (data: Object) => await axios.post(`/tasks`,data),
 );
 export const updateTask = asyncHandler(
-  async (id: number, data: Object) => await axios.post(`/tasks/${id}`,data),
+  async (data: Object, id: number) => await axios.post(`/tasks/${id}`,data),
 );
 export const closeTask = asyncHandler(
   async (id: number) => await axios.post(`/tasks/${id}/close`),
@@ -21,5 +21,5 @@ export const reopenTask = asyncHandler(
   async (id: number) => await axios.post(`/tasks/${id}/reopen`),
 );
 export const deleteTask = asyncHandler(
-  async (id: number) => await axios.post(`/tasks/${id}`),
+  async (id: number) => await axios.delete(`/tasks/${id}`),
 );
