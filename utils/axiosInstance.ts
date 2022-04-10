@@ -1,7 +1,9 @@
 import axios from "axios";
+// @ts-ignore
+import {BASE_URL, API_TOKEN} from "react-native-dotenv"
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.todoist.com/rest/v1/",
+  baseURL: process.env.BASE_URL,
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -11,7 +13,7 @@ const axiosInstance = axios.create({
 // Set the AUTH token for any request
 axiosInstance.interceptors.request.use(
   async (request: any) => {
-    const token = "ab9855583345f7886c83ac8d4afffe0832c7e975";
+    const token = process.env.API_TOKEN;
     request.headers["Authorization"] = `Bearer ${token}`;
     return request;
   },
