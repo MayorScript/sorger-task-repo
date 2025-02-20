@@ -1,4 +1,4 @@
-# This is a mobile app for sorger test
+# This is a poc mobile app for sorger
 
 ## Project Setup
 ** Install dependencies **
